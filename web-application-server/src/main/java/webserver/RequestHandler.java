@@ -57,6 +57,9 @@ public class RequestHandler extends Thread {
 				User user = new User(params.get("userId"), params.get("password"), params.get("name"),
 					params.get("email"));
 				log.debug("User : {}", user);
+
+				DataOutputStream dos = new DataOutputStream(out);
+				response302Header(dos, "/index.html");
 			}
 
 			DataOutputStream dos = new DataOutputStream(out);
@@ -64,6 +67,25 @@ public class RequestHandler extends Thread {
 			response200Header(dos, body.length);
 			responseBody(dos, body);
 
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
+	}
+
+	/**
+	 * 리다이렉트 방식으로 페이지 이동
+	 * <p>
+	 * 회원가입처리하는 /user/create 요청과 index.html을 보여주는 요청방식 분리 후 HTTP의 302 상태코드를 활용
+	 * 즉, 회원가입을 완료한 후 응답을 보냄.
+	 * 
+	 * @param dos
+	 * @param url
+	 */
+	private void response302Header(DataOutputStream dos, String url) {
+		try {
+			dos.writeBytes("HTTP/1.1 302 Redirect \r\n");
+			dos.writeBytes("Location : " + url + " \r\n");
+			dos.writeBytes("\r\n");
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
