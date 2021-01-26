@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -43,11 +44,13 @@ public class RequestHandler extends Thread {
 
 			String[] tokens = line.split(" ");
 			int contentLength = 0;
+			boolean logined = false;
 			while (!line.equals("")) {
 				log.debug("header : {}", line);
 				line = br.readLine();
 				if (line.contains("Content-Length")) {
 					contentLength = getContentLength(line);
+					logined = isLogin(line);
 				}
 			}
 
@@ -73,12 +76,50 @@ public class RequestHandler extends Thread {
 				} else {
 					responseResource(out, "/user/login_failed.html");
 				}
+			} else if ("/user/list".equals(url)) {
+				if (!logined) {
+					responseResource(out, "/user/login.html");
+					return;
+				}
+
+				Collection<User> users = DataBase.findAll();
+				StringBuilder sb = new StringBuilder();
+
+				sb.append("<table border='1'>");
+				for (User user : users) {
+					sb.append("<tr>");
+					sb.append("<td>" + user.getUserId() + "</td>");
+					sb.append("<td>" + user.getName() + "</td>");
+					sb.append("<td>" + user.getEmail() + "</td>");
+					sb.append("</tr>");
+				}
+				sb.append("</table>");
+				byte[] body = sb.toString().getBytes();
+				DataOutputStream dos = new DataOutputStream(out);
+				response200Header(dos, body.length);
+				responseBody(dos, body);
+
 			} else {
 				responseResource(out, url);
 			}
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}
+	}
+
+	/**
+	 * 로그인 여부 확인하는 함수
+	 * @param line
+	 * @return
+	 */
+	private boolean isLogin(String line) {
+		String[] headerTokens = line.split(":");
+		Map<String, String> cookies = HttpRequestUtils.parseCookies(headerTokens[1].trim());
+		String value = cookies.get("logined");
+		if (value == null) {
+			return false;
+		}
+		return Boolean.parseBoolean(value);
 	}
 
 	private void response302LoginSuccessHeader(DataOutputStream dos) {
