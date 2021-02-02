@@ -1,0 +1,4 @@
+GET /user/create?userId=javajigi&password=password&name=JaeSung HTTP/1.1
+HOST: loaclhost:8080
+Connection: keep-alive
+Accpet: */*
