@@ -1,10 +1,12 @@
-package webserver;
+package http;
 
 import static org.junit.Assert.*;
 
 import java.util.Map;
 
 import org.junit.Test;
+
+import http.RequestLine;
 
 public class RequestLineTest {
 

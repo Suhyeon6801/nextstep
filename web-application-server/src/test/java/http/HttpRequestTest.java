@@ -1,4 +1,4 @@
-package webserver;
+package http;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import org.junit.Test;
+
+import http.HttpRequest;
 
 public class HttpRequestTest {
 
