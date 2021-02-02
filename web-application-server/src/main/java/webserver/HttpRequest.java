@@ -55,7 +55,7 @@ public class HttpRequest {
 		}
 	}
 
-	public String getMethod() {
+	public HttpMethod getMethod() {
 		return requestLine.getMethod();
 	}
 
