@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class HttpResponse {
-	private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpResponse.class);
 	private DataOutputStream dos = null;
 	private Map<String, String> headers = new HashMap<String, String>();
 
