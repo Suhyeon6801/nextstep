@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class HttpRequestTest {
 
-	private String testDirecotry = "./src/test/resources";
+	private String testDirecotry = "./src/test/resources/";
 
 	@Test
 	public void request_GET() throws Exception {
