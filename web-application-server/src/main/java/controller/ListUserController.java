@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import http.HttpCookie;
 import http.HttpRequest;
 import http.HttpResponse;
 import model.User;
-import util.HttpRequestUtils;
 
 public class ListUserController implements Controller {
 	private static final Logger log = LoggerFactory.getLogger(ListUserController.class);
